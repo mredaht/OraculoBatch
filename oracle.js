@@ -1,3 +1,5 @@
+// oracle.js — versión batch con uint32
+
 import "dotenv/config";
 import Web3 from "web3";
 import fs from "fs";
@@ -18,7 +20,7 @@ web3.eth.accounts.wallet.add(acct);
 const league = new web3.eth.Contract(leagueAbi, env("LEAGUE_ADDRESS"));
 
 // ── Parámetros ───────────────────────────────────────────
-const GAS_LIMIT = 120_000;           // cabe de sobra con uint32
+const GAS_LIMIT = 5_000_000;
 const STATS_FILE = "./stats.json";
 
 // ── Utilidades ───────────────────────────────────────────
@@ -26,42 +28,45 @@ function loadStats() {
     return JSON.parse(fs.readFileSync(STATS_FILE, "utf8"));
 }
 
-/** Empaca un jugador en un uint32 (ver tabla de bits) */
 function pack32(p) {
-    // validaciones *hard*; lanza si algo sobrepasa los límites
     if (p.goles > 8) throw new Error(`goles>8 id=${p.id}`);
     if (p.asistencias > 8) throw new Error(`asis>8 id=${p.id}`);
     if (p.penaltisParados > 4) throw new Error(`penaltisParados>4 id=${p.id}`);
-    if (p.paradas > 32 ||
-        p.despejes > 64) throw new Error(`paradas/despejes fuera de rango id=${p.id}`);
+    if (p.paradas > 32 || p.despejes > 64) throw new Error(`paradas/despejes fuera de rango id=${p.id}`);
     if (p.minutosJugados > 90) throw new Error(`minutos>90 id=${p.id}`);
-    if (p.tarjetasAmarillas > 2 || p.tarjetasRojas > 1)
-        throw new Error(`tarjetas fuera de rango id=${p.id}`);
+    if (p.tarjetasAmarillas > 2 || p.tarjetasRojas > 1) throw new Error(`tarjetas fuera de rango id=${p.id}`);
 
-    const paradas = Math.min(p.paradas, 31);            // 5 bits
-    const despejes = Math.min(p.despejes, 63);           // 6 bits
-    const minutosQ = Math.floor(p.minutosJugados / 3);   // 0-30, 5 bits
+    const paradas = Math.min(p.paradas, 31);
+    const despejes = Math.min(p.despejes, 63);
+    const minutosQ = Math.floor(p.minutosJugados / 3);
 
-    let d = BigInt(p.goles & 0x0F);        // 4 bits
-    d |= BigInt(p.asistencias & 0x0F) << 4n;         // +4 = 8
-    d |= BigInt(paradas & 0x1F) << 8n;         // +5 = 13
-    d |= BigInt(p.penaltisParados & 0x07) << 13n;        // +3 = 16
-    d |= BigInt(despejes & 0x3F) << 16n;        // +6 = 22
-    d |= BigInt(minutosQ & 0x1F) << 22n;        // +5 = 27
-    d |= BigInt(p.tarjetasAmarillas & 0x03) << 27n;        // +2 = 29
-    d |= BigInt(p.tarjetasRojas & 0x01) << 29n;        // +1 = 30
+    let d = BigInt(p.goles & 0x0F);
+    d |= BigInt(p.asistencias & 0x0F) << 4n;
+    d |= BigInt(paradas & 0x1F) << 8n;
+    d |= BigInt(p.penaltisParados & 0x07) << 13n;
+    d |= BigInt(despejes & 0x3F) << 16n;
+    d |= BigInt(minutosQ & 0x1F) << 22n;
+    d |= BigInt(p.tarjetasAmarillas & 0x03) << 27n;
+    d |= BigInt(p.tarjetasRojas & 0x01) << 29n;
     if (p.porteriaCero) d |= 1n << 30n;
     if (p.ganoPartido) d |= 1n << 31n;
 
-    return "0x" + d.toString(16).padStart(8, "0");        // 8-byte hex
+    return "0x" + d.toString(16).padStart(8, "0");
 }
 
-// ── Métricas (opcional) ─────────────────────────────────
-let totalGas = 0n, latencies = [];
+// ── Main ────────────────────────────────────────────────
+(async () => {
+    const stats = loadStats();
+    const ids = [];
+    const datos = [];
 
-// ── Envío de una estadística ────────────────────────────
-async function sendPacked(packedHex, id, nonce) {
-    const tx = league.methods.actualizarStatsPacked32(id, packedHex);
+    for (const p of stats) {
+        if (p.goles === undefined) continue;
+        ids.push(p.id);
+        datos.push(pack32(p));
+    }
+
+    const tx = league.methods.actualizarStatsBatchPacked32(ids, datos);
     const encoded = tx.encodeABI();
 
     const block = await web3.eth.getBlock("pending");
@@ -75,44 +80,20 @@ async function sendPacked(packedHex, id, nonce) {
         gas: GAS_LIMIT,
         maxPriorityFeePerGas: tip.toString(),
         maxFeePerGas: maxFee.toString(),
-        nonce,
         data: encoded
     };
 
-    return retry(async () => {
-        const t0 = Date.now();
-        const signed = await acct.signTransaction(txData);
-        const rcpt = await web3.eth.sendSignedTransaction(signed.rawTransaction);
-        const dt = Date.now() - t0;
-
-        totalGas += BigInt(rcpt.gasUsed);
-        latencies.push(dt);
-
-        console.log(`id ${id}  gas=${rcpt.gasUsed}  ${dt} ms`);
-        return rcpt;
-    }, { retries: 3, onRetry: (e, i) => console.log(`reintento id ${id} (${i})`) });
-}
-
-// ── Main ────────────────────────────────────────────────
-(async () => {
-    const stats = loadStats();
-    let nonce = await web3.eth.getTransactionCount(acct.address, "pending");
-
     console.time("batch");
-    for (const p of stats) {
-        if (p.goles === undefined) continue;    // ignora filas incompletas
-        const packed = pack32(p);
-        await sendPacked(packed, p.id, nonce++);
-    }
-    console.timeEnd("batch");
-
-    const avgGas = Number(totalGas) / stats.length;
-    const avgLat = latencies.reduce((a, b) => a + b, 0) / stats.length;
+    await retry(async () => {
+        const signed = await acct.signTransaction(txData);
+        const receipt = await web3.eth.sendSignedTransaction(signed.rawTransaction);
+        console.log(`✅ Gas usado: ${receipt.gasUsed}`);
+        console.timeEnd("batch");
+    }, {
+        retries: 3,
+        onRetry: (e, i) => console.log(`Reintento ${i + 1}: ${e.message}`)
+    });
 
     console.log("\n── Resumen ─────────│");
-    console.log(`Jugadores procesados : ${stats.length}`);
-    console.log(`Gas total            : ${totalGas}`);
-    console.log(`Gas medio / jugador  : ${avgGas.toFixed(0)}`);
-    console.log(`Latencia media (ms)  : ${avgLat.toFixed(0)}`);
-    process.exit(0);
+    console.log(`Jugadores procesados : ${ids.length}`);
 })();
