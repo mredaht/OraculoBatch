@@ -1,0 +1,8 @@
+ Gas usado: 175363
+
+── Resumen ─────────│
+Jugadores procesados : 10
+Gas total            : 175363
+Gas medio / jugador  : 17536
+Latencia media (ms)  : 1538
+Tiempo total (ms)    : 15378

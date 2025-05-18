@@ -1,5 +1,4 @@
-// oracle.js — versión batch con uint32
-
+// ── Importaciones y configuración ───────────────────────
 import "dotenv/config";
 import Web3 from "web3";
 import fs from "fs";
@@ -55,6 +54,10 @@ function pack32(p) {
 }
 
 // ── Main ────────────────────────────────────────────────
+let totalGas = 0;
+let totalTime = 0;
+let jugadoresProcesados = 0;
+
 (async () => {
     const stats = loadStats();
     const ids = [];
@@ -65,6 +68,8 @@ function pack32(p) {
         ids.push(p.id);
         datos.push(pack32(p));
     }
+
+    jugadoresProcesados = ids.length;
 
     const tx = league.methods.actualizarStatsBatchPacked32(ids, datos);
     const encoded = tx.encodeABI();
@@ -83,17 +88,30 @@ function pack32(p) {
         data: encoded
     };
 
-    console.time("batch");
     await retry(async () => {
+        const start = Date.now();
         const signed = await acct.signTransaction(txData);
         const receipt = await web3.eth.sendSignedTransaction(signed.rawTransaction);
-        console.log(`✅ Gas usado: ${receipt.gasUsed}`);
-        console.timeEnd("batch");
+        const end = Date.now();
+
+        totalGas = receipt.gasUsed;
+        totalTime = end - start;
+
+        console.log(` Gas usado: ${receipt.gasUsed}`);
     }, {
         retries: 3,
         onRetry: (e, i) => console.log(`Reintento ${i + 1}: ${e.message}`)
     });
 
+    const avgGas = jugadoresProcesados ? Number(totalGas) / jugadoresProcesados : 0;
+    const avgLat = jugadoresProcesados ? totalTime / jugadoresProcesados : 0;
+
+
     console.log("\n── Resumen ─────────│");
-    console.log(`Jugadores procesados : ${ids.length}`);
+    console.log(`Jugadores procesados : ${jugadoresProcesados}`);
+    console.log(`Gas total            : ${totalGas}`);
+    console.log(`Gas medio / jugador  : ${avgGas.toFixed(0)}`);
+    console.log(`Latencia media (ms)  : ${avgLat.toFixed(0)}`);
+    console.log(`Tiempo total (ms)    : ${totalTime}`);
+    process.exit(0);
 })();
