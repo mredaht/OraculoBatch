@@ -1,0 +1,884 @@
+[
+    {
+        "type": "constructor",
+        "inputs": [
+            {
+                "name": "_fantasyPlayerNFT",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "fallback",
+        "stateMutability": "payable"
+    },
+    {
+        "type": "receive",
+        "stateMutability": "payable"
+    },
+    {
+        "type": "function",
+        "name": "DEFAULT_ADMIN_ROLE",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "ORACLE_ROLE",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "UsuariosInscritos",
+        "inputs": [
+            {
+                "name": "",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool",
+                "internalType": "bool"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "actualizarEstadisticas",
+        "inputs": [
+            {
+                "name": "_tokenId",
+                "type": "uint256",
+                "internalType": "uint256"
+            },
+            {
+                "name": "_goles",
+                "type": "uint256",
+                "internalType": "uint256"
+            },
+            {
+                "name": "_asistencias",
+                "type": "uint256",
+                "internalType": "uint256"
+            },
+            {
+                "name": "_paradas",
+                "type": "uint256",
+                "internalType": "uint256"
+            },
+            {
+                "name": "_penaltisParados",
+                "type": "uint256",
+                "internalType": "uint256"
+            },
+            {
+                "name": "_despejes",
+                "type": "uint256",
+                "internalType": "uint256"
+            },
+            {
+                "name": "_minutosJugados",
+                "type": "uint256",
+                "internalType": "uint256"
+            },
+            {
+                "name": "_porteriaCero",
+                "type": "bool",
+                "internalType": "bool"
+            },
+            {
+                "name": "_tarjetasAmarillas",
+                "type": "uint256",
+                "internalType": "uint256"
+            },
+            {
+                "name": "_tarjetasRojas",
+                "type": "uint256",
+                "internalType": "uint256"
+            },
+            {
+                "name": "_ganoPartido",
+                "type": "bool",
+                "internalType": "bool"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "actualizarPuntuacionesDeTodos",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "actualizarStatsBatchPacked32",
+        "inputs": [
+            {
+                "name": "ids",
+                "type": "uint256[]",
+                "internalType": "uint256[]"
+            },
+            {
+                "name": "datos",
+                "type": "uint32[]",
+                "internalType": "uint32[]"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "actualizarStatsPacked32",
+        "inputs": [
+            {
+                "name": "_tokenId",
+                "type": "uint256",
+                "internalType": "uint256"
+            },
+            {
+                "name": "data",
+                "type": "uint32",
+                "internalType": "uint32"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "calcularPuntuacionEquipo",
+        "inputs": [
+            {
+                "name": "_jugador",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "total",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "cargarJugadoresDisponibles",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "distribuirPremio",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "equipos",
+        "inputs": [
+            {
+                "name": "",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "owner",
+                "type": "address",
+                "internalType": "address payable"
+            },
+            {
+                "name": "nombre",
+                "type": "string",
+                "internalType": "string"
+            },
+            {
+                "name": "puntuacionEquipo",
+                "type": "uint256",
+                "internalType": "uint256"
+            },
+            {
+                "name": "seleccionado",
+                "type": "bool",
+                "internalType": "bool"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "fantasyPlayerNFT",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "address",
+                "internalType": "contract FantasyPlayerNFT"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "finalizarJornada",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "gameStatus",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint8",
+                "internalType": "enum FantasyLeague.Status"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "getEquipo",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "tuple",
+                "internalType": "struct FantasyLeague.Equipo",
+                "components": [
+                    {
+                        "name": "owner",
+                        "type": "address",
+                        "internalType": "address payable"
+                    },
+                    {
+                        "name": "nombre",
+                        "type": "string",
+                        "internalType": "string"
+                    },
+                    {
+                        "name": "jugadores",
+                        "type": "uint256[5]",
+                        "internalType": "uint256[5]"
+                    },
+                    {
+                        "name": "puntuacionEquipo",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "seleccionado",
+                        "type": "bool",
+                        "internalType": "bool"
+                    }
+                ]
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "getEquiposInscritos",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "tuple[]",
+                "internalType": "struct FantasyLeague.Equipo[]",
+                "components": [
+                    {
+                        "name": "owner",
+                        "type": "address",
+                        "internalType": "address payable"
+                    },
+                    {
+                        "name": "nombre",
+                        "type": "string",
+                        "internalType": "string"
+                    },
+                    {
+                        "name": "jugadores",
+                        "type": "uint256[5]",
+                        "internalType": "uint256[5]"
+                    },
+                    {
+                        "name": "puntuacionEquipo",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "seleccionado",
+                        "type": "bool",
+                        "internalType": "bool"
+                    }
+                ]
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "getEstadoActual",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint8",
+                "internalType": "enum FantasyLeague.Status"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "getRoleAdmin",
+        "inputs": [
+            {
+                "name": "role",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "grantRole",
+        "inputs": [
+            {
+                "name": "role",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "hasRole",
+        "inputs": [
+            {
+                "name": "role",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool",
+                "internalType": "bool"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "iniciarJornada",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "jugadorElegido",
+        "inputs": [
+            {
+                "name": "",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool",
+                "internalType": "bool"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "jugadores",
+        "inputs": [
+            {
+                "name": "",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "id",
+                "type": "uint256",
+                "internalType": "uint256"
+            },
+            {
+                "name": "nombre",
+                "type": "string",
+                "internalType": "string"
+            },
+            {
+                "name": "equipo",
+                "type": "string",
+                "internalType": "string"
+            },
+            {
+                "name": "puntuacion",
+                "type": "uint16",
+                "internalType": "uint16"
+            },
+            {
+                "name": "goles",
+                "type": "uint8",
+                "internalType": "uint8"
+            },
+            {
+                "name": "asistencias",
+                "type": "uint8",
+                "internalType": "uint8"
+            },
+            {
+                "name": "paradas",
+                "type": "uint8",
+                "internalType": "uint8"
+            },
+            {
+                "name": "penaltisParados",
+                "type": "uint8",
+                "internalType": "uint8"
+            },
+            {
+                "name": "despejes",
+                "type": "uint8",
+                "internalType": "uint8"
+            },
+            {
+                "name": "minutosJugados",
+                "type": "uint8",
+                "internalType": "uint8"
+            },
+            {
+                "name": "porteriaCero",
+                "type": "bool",
+                "internalType": "bool"
+            },
+            {
+                "name": "tarjetasAmarillas",
+                "type": "uint8",
+                "internalType": "uint8"
+            },
+            {
+                "name": "tarjetasRojas",
+                "type": "uint8",
+                "internalType": "uint8"
+            },
+            {
+                "name": "ganoPartido",
+                "type": "bool",
+                "internalType": "bool"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "owner",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "pagarEntrada",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "payable"
+    },
+    {
+        "type": "function",
+        "name": "renounceOwnership",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "renounceRole",
+        "inputs": [
+            {
+                "name": "role",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "resetJornada",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "revokeRole",
+        "inputs": [
+            {
+                "name": "role",
+                "type": "bytes32",
+                "internalType": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "seleccionarJugadores",
+        "inputs": [
+            {
+                "name": "_nombreEquipo",
+                "type": "string",
+                "internalType": "string"
+            },
+            {
+                "name": "_jugadores",
+                "type": "uint256[5]",
+                "internalType": "uint256[5]"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "setOracle",
+        "inputs": [
+            {
+                "name": "oracle",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "supportsInterface",
+        "inputs": [
+            {
+                "name": "interfaceId",
+                "type": "bytes4",
+                "internalType": "bytes4"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool",
+                "internalType": "bool"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "transferOwnership",
+        "inputs": [
+            {
+                "name": "newOwner",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "withdraw",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "event",
+        "name": "EntradaPagada",
+        "inputs": [
+            {
+                "name": "usuario",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "EstadisticasActualizadas",
+        "inputs": [
+            {
+                "name": "jugadorId",
+                "type": "uint256",
+                "indexed": true,
+                "internalType": "uint256"
+            },
+            {
+                "name": "nuevaPuntuacion",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "EstadoJornadaActualizado",
+        "inputs": [
+            {
+                "name": "nuevoEstado",
+                "type": "uint8",
+                "indexed": false,
+                "internalType": "enum FantasyLeague.Status"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "JornadaReiniciada",
+        "inputs": [],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "JugadoresSeleccionados",
+        "inputs": [
+            {
+                "name": "usuario",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            {
+                "name": "nombreEquipo",
+                "type": "string",
+                "indexed": false,
+                "internalType": "string"
+            },
+            {
+                "name": "jugadores",
+                "type": "uint256[5]",
+                "indexed": false,
+                "internalType": "uint256[5]"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "OwnershipTransferred",
+        "inputs": [
+            {
+                "name": "previousOwner",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            {
+                "name": "newOwner",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "PremioDistribuido",
+        "inputs": [
+            {
+                "name": "ganador",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            {
+                "name": "cantidad",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "RetiroDeFondos",
+        "inputs": [
+            {
+                "name": "admin",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            {
+                "name": "cantidad",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "RoleAdminChanged",
+        "inputs": [
+            {
+                "name": "role",
+                "type": "bytes32",
+                "indexed": true,
+                "internalType": "bytes32"
+            },
+            {
+                "name": "previousAdminRole",
+                "type": "bytes32",
+                "indexed": true,
+                "internalType": "bytes32"
+            },
+            {
+                "name": "newAdminRole",
+                "type": "bytes32",
+                "indexed": true,
+                "internalType": "bytes32"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "RoleGranted",
+        "inputs": [
+            {
+                "name": "role",
+                "type": "bytes32",
+                "indexed": true,
+                "internalType": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            {
+                "name": "sender",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "RoleRevoked",
+        "inputs": [
+            {
+                "name": "role",
+                "type": "bytes32",
+                "indexed": true,
+                "internalType": "bytes32"
+            },
+            {
+                "name": "account",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            {
+                "name": "sender",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    }
+]
